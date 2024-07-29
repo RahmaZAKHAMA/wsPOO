@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Display Text Letter by Letter with Blinking Cursor</title>
+<style>
+  /* Styling for the cursor */
+  .cursor {
+    display: inline-block;
+    width: 1px; /* Largeur du curseur */
+    height: 1em; /* Hauteur du curseur */
+    background-color: black; /* Couleur du curseur */
+  }
+</style>
+</head>
+<body>
+
+<div id="text-display">
+  <p id="line1"></p>
+  <p id="line2"></p>
+</div>
+
+<script>
+  const textLines = [
+    "Première ligne de texte.",
+    "Deuxième ligne de texte."
+  ];
+  const textDisplay = document.getElementById('text-display');
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  cursor.textContent = '|';
+  textDisplay.appendChild(cursor);
+
+  let currentLine = 0;
+  let currentChar = 0;
+
+  function displayText() {
+    if (currentLine < textLines.length) {
+      const line = textLines[currentLine];
+      const lineElement = document.getElementById(`line${currentLine + 1}`);
+
+      if (currentChar < line.length) {
+        lineElement.textContent += line[currentChar];
+        currentChar++;
+        setTimeout(displayText, 50); // Adjust the delay (milliseconds) between letters
+      } else {
+        currentLine++;
+        currentChar = 0;
+        if (currentLine < textLines.length) {
+          setTimeout(displayText, 1000); // Delay between lines
+        } else {
+          toggleCursor();
+        }
+      }
+    }
+  }
+
+  function toggleCursor() {
+    cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+    setTimeout(toggleCursor, 500); // Toggle cursor every 500ms
+  }
+
+  // Start displaying text
+  displayText();
+</script>
+
+</body>
+</html>
+
